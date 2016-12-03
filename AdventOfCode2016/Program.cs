@@ -12,7 +12,8 @@ namespace AdventOfCode2016 {
     class Program {
         static void Main(string[] args) {
             //Day1 daySolution = new Day1();
-            Day2 daySolution = new Day2();
+            //Day2 daySolution = new Day2();
+            Day3 daySolution = new Day3();
 
             daySolution.createSolution();
         }
