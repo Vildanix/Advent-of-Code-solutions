@@ -28,7 +28,7 @@ namespace AdventOfCode2016 {
              */
 
             // test string
-            string testString = "not-a-real-room-404[oarel]";
+            string testString = "qzmt-zixmtkozy-ivhz-343[zimth]";
 
             // load and prepare file containing input
             StreamReader inputFileStream = new StreamReader("../../Resources/input-day4.txt");
@@ -37,7 +37,7 @@ namespace AdventOfCode2016 {
             string[] roomNames = inputFile.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
             //string[] roomNames = testString.Split(new char[] { '\n' }, StringSplitOptions.RemoveEmptyEntries);
 
-            string roomLetters, roomChecksum;
+            string roomLetters, roomChecksum, decipheredName;
             int roomNumber, sectorSum = 0;
             foreach (string room in roomNames) {
                 // get room name parts
@@ -51,6 +51,15 @@ namespace AdventOfCode2016 {
                     // count real rooms
                     if (isRealRoom(roomLetters, roomChecksum)) {
                         sectorSum += roomNumber;
+
+                        // part 2
+                        decipheredName = decipherRoom(match.Groups[1].Value, roomNumber);
+                        Console.WriteLine("Sector: {0} - {1}", roomNumber, decipheredName);
+
+                        // pause output if room name contain word "north"
+                        if (decipheredName.Contains("north")) {
+                            Console.ReadKey();
+                        }
                     }
                 }
             }
@@ -77,13 +86,35 @@ namespace AdventOfCode2016 {
 
             // checksum check
             char[] checksumChars = roomChecksum.ToCharArray();
-            for (int checksumIndex = 0; checksumIndex < checksumChars.Length; checksumIndex++) {
-                if (charCountList[checksumIndex].Key != checksumChars[checksumIndex]) {
+            for (int checksumIdx = 0; checksumIdx < checksumChars.Length; checksumIdx++) {
+                if (charCountList[checksumIdx].Key != checksumChars[checksumIdx]) {
                     return false;
                 }
             }
 
             return true;
+        }
+
+        private string decipherRoom(string roomName, int sectorID) {
+            int charCycleSize = 'z' - 'a' + 1;
+            char[] roomNameChars = roomName.ToCharArray();
+
+            // decrypt char shift cipher
+            for (int charIdx = 0; charIdx < roomNameChars.Length; charIdx++) {
+                // replace - with space without shifting
+                if (roomNameChars[charIdx] == '-') {
+                    roomNameChars[charIdx] = ' ';
+                    continue;
+                }
+
+                // shift char and cycle if new char is out of avalible characters
+                roomNameChars[charIdx] = (char)(roomNameChars[charIdx] + sectorID % charCycleSize);
+                if (roomNameChars[charIdx] > 'z') {
+                    roomNameChars[charIdx] -= (char)charCycleSize;
+                }
+            }
+
+            return new string(roomNameChars);
         }
 
     }
