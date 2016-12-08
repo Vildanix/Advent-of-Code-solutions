@@ -76,7 +76,11 @@ namespace AdventOfCode2016 {
                 if (displayMatrix[i]) {
                     enabledCount++;
                 }
-                
+
+                Console.Write("{0}", displayMatrix[i] ? '#' : ' ');
+                if (i % columns == columns - 1) {
+                    Console.Write("\n");
+                }
             }
 
             Console.WriteLine("Pixels lit: {0}", enabledCount);
