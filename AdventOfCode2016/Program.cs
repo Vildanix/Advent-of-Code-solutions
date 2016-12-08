@@ -17,7 +17,8 @@ namespace AdventOfCode2016 {
             //Day4 daySolution = new Day4();
             //Day5 daySolution = new Day5();
             //Day6 daySolution = new Day6();
-            Day7 daySolution = new Day7();
+            //Day7 daySolution = new Day7();
+            Day8 daySolution = new Day8();
 
             daySolution.createSolution();
         }
