@@ -1,2 +1,3 @@
-# Advent-of-Code-2016
+# Advent-of-Code
 Programování vánočních úloh z adventofcode.com
+
