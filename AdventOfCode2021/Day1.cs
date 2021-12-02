@@ -6,7 +6,7 @@ using System.Text;
 
 // Advent of Code
 // Autor: Stanislav Tvrzník
-// Year: 2016
+// Year: 2021
 
 namespace AdventOfCode2021 {
     class Day1 {

@@ -9,7 +9,8 @@ namespace AdventOfCode2021
             Console.WriteLine("Advent of code 2021");
             Console.WriteLine("-------------------");
 
-            Day1 daySolution = new Day1();
+            //Day1 daySolution = new Day1();
+            Day2 daySolution = new Day2();
 
             daySolution.createSolution();
         }
