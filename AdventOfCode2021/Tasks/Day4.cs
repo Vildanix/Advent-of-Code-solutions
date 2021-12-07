@@ -8,8 +8,9 @@ using System.Text;
 // Autor: Stanislav Tvrzník
 // Year: 2021
 
-namespace AdventOfCode2021 {
-    class Day4 {
+namespace AdventOfCode2021.Tasks
+{
+    class Day4: DailySolution {
         private const int BOARD_SIZE = 5;
 
         private class Board
@@ -95,7 +96,10 @@ namespace AdventOfCode2021 {
             }
         }
 
-        public void createSolution() {
+        public Day4(string baseInputFileName) : base(baseInputFileName) { }
+
+        protected override void PrintFirstSolution(string inputFile)
+        {
             /*  
              *  You're already almost 1.5km (almost a mile) below the surface of the ocean, already so deep that you can't see any sunlight. 
              *  What you can see, however, is a giant squid that has attached itself to the outside of your submarine.
@@ -113,20 +117,12 @@ namespace AdventOfCode2021 {
              *  
              *  To guarantee victory against the giant squid, figure out which board will win first. What will your final score be if you choose that board?
              */
+            var solution = SolveWinningBoard(inputFile);
+            Console.WriteLine($"Board number: {solution.Item1}, Winning value: {solution.Item2}");
+        }
 
-            String testInput = File.ReadAllText("./Inputs/input_day4_test.txt");
-
-            // load and prepare file containing input
-            String inputFile = File.ReadAllText("./Inputs/input_day4.txt");
-
-            Console.Write("Test first solution: ");
-            var testSolution = SolveWinningBoard(testInput);
-            Console.WriteLine($"Board number: {testSolution.Item1}, Winning value: {testSolution.Item2}");
-
-            Console.Write("First solution: ");
-            var firstSolution = SolveWinningBoard(inputFile);
-            Console.WriteLine($"Board number: {firstSolution.Item1}, Winning value: {firstSolution.Item2}");
-
+        protected override void PrintSecondSolution(string inputFile)
+        {
             /**
              * On the other hand, it might be wise to try a different strategy: let the giant squid win.
              * You aren't sure how many bingo boards a giant squid could play at once, so rather than waste time counting its arms, 
@@ -135,18 +131,9 @@ namespace AdventOfCode2021 {
              * Figure out which board will win last. Once it wins, what would its final score be?
              */
 
-            Console.Write("Test second solution: ");
-            var testSecondSolution = SolveLastWinningBoard(testInput);
-            Console.WriteLine($"Board number: {testSecondSolution.Item1}, Winning value: {testSecondSolution.Item2}");
-
-            Console.Write("Second solution: ");
-            var secondSolution = SolveLastWinningBoard(inputFile);
-            Console.WriteLine($"Board number: {secondSolution.Item1}, Winning value: {secondSolution.Item2}");
-
-            Console.ReadKey();
-
+            var solution = SolveLastWinningBoard(inputFile);
+            Console.WriteLine($"Board number: {solution.Item1}, Winning value: {solution.Item2}");
         }
-
 
         private Tuple<int, int> SolveWinningBoard(string input)
         {
@@ -219,11 +206,6 @@ namespace AdventOfCode2021 {
             }
 
             return boards;
-        }
-
-        private IEnumerable<string> SeparateLines(string input)
-        {
-            return input.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
     }
 }

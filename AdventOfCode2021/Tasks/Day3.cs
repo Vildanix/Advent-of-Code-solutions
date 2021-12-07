@@ -8,8 +8,10 @@ using System.Text;
 // Autor: Stanislav Tvrzník
 // Year: 2021
 
-namespace AdventOfCode2021 {
-    class Day3 {
+namespace AdventOfCode2021.Tasks
+{
+    class Day3: DailySolution {
+        public Day3(string baseInputFileName) : base(baseInputFileName) { }
 
         private struct PowerConsumptionDto
         {
@@ -25,8 +27,8 @@ namespace AdventOfCode2021 {
             public int LifeSupport { get; set; }
         }
 
-
-        public void createSolution() {
+        protected override void PrintFirstSolution(string inputFile)
+        {
             /*  
              *  The submarine has been making some odd creaking noises, so you ask it to produce a diagnostic report just in case.
              *  The diagnostic report (your puzzle input) consists of a list of binary numbers which, when decoded properly, 
@@ -42,20 +44,12 @@ namespace AdventOfCode2021 {
              *  Answer is decimal number
              */
 
-            String testInput = File.ReadAllText("./Inputs/input_day3_test.txt");
+            var solution = SolvePowerConsumption(inputFile);
+            Console.WriteLine($"Gama rate: {solution.GamaRate}, Epsilon rate: {solution.EpsilonRate}, Power consumption: {solution.PowerConsumption}");
+        }
 
-            // load and prepare file containing input
-            String inputFile = File.ReadAllText("./Inputs/input_day3.txt");
-
-            // sort by most common letter and print it
-            Console.Write("Test first solution: ");
-            var testSolution = SolvePowerConsumption(testInput);
-            Console.WriteLine($"Gama rate: {testSolution.GamaRate}, Epsilon rate: {testSolution.EpsilonRate}, Power consumption: {testSolution.PowerConsumption}");
-
-            Console.Write("First solution: ");
-            var firstSolution = SolvePowerConsumption(inputFile);
-            Console.WriteLine($"Gama rate: {firstSolution.GamaRate}, Epsilon rate: {firstSolution.EpsilonRate}, Power consumption: {firstSolution.PowerConsumption}");
-
+        protected override void PrintSecondSolution(string inputFile)
+        {
             /**
              * Next, you should verify the life support rating, which can be determined by multiplying the oxygen generator rating by the CO2 scrubber rating.
              * Both the oxygen generator rating and the CO2 scrubber rating are values that can be found in your diagnostic report - finding them is the tricky part.
@@ -73,19 +67,10 @@ namespace AdventOfCode2021 {
              *   - To find CO2 scrubber rating, determine the least common value (0 or 1) in the current bit position, 
              *     and keep only numbers with that bit in that position. If 0 and 1 are equally common,
              *     keep values with a 0 in the position being considered.
-
              */
 
-            Console.Write("Test second solution: ");
-            var testSecondSolution = SolveLifeSupport(testInput);
-            Console.WriteLine($"Oxygen gen.: {testSecondSolution.Oxygen}, CO2 Scrubber: {testSecondSolution.CO2}, Life support: {testSecondSolution.LifeSupport}");
-
-            Console.Write("Second solution: ");
-            var secondSolution = SolveLifeSupport(inputFile);
-            Console.WriteLine($"Oxygen gen.: {secondSolution.Oxygen}, CO2 Scrubber: {secondSolution.CO2}, Life support: {secondSolution.LifeSupport}");
-
-            Console.ReadKey();
-
+            var solution = SolveLifeSupport(inputFile);
+            Console.WriteLine($"Oxygen gen.: {solution.Oxygen}, CO2 Scrubber: {solution.CO2}, Life support: {solution.LifeSupport}");
         }
 
         private char GetMostCommonBit(List<int> readings, int position)
@@ -172,11 +157,6 @@ namespace AdventOfCode2021 {
                 CO2 = Convert.ToString(co2Scrubber.First(), 2),
                 LifeSupport = oxygenGeneratorInputs.First() * co2Scrubber.First()
             };
-        }
-
-        private IEnumerable<string> SeparateLines(string input)
-        {
-            return input.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries);
         }
 
         private int MaxBinaryLength(IEnumerable<int> inputs)

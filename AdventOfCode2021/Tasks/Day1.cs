@@ -8,10 +8,14 @@ using System.Text;
 // Autor: Stanislav Tvrzník
 // Year: 2021
 
-namespace AdventOfCode2021 {
-    class Day1 {
+namespace AdventOfCode2021.Tasks
+{
+    class Day1 : DailySolution {
 
-        public void createSolution() {
+        public Day1(string baseInputFileName) : base(baseInputFileName) { }
+
+        protected override void PrintFirstSolution(string inputFile)
+        {
             /*  Distance to Easter Bunny HQ
              *  
              *  As the submarine drops below the surface of the ocean, it automatically performs a sonar sweep of the nearby sea floor. 
@@ -23,36 +27,23 @@ namespace AdventOfCode2021 {
              *  To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.)
              */
 
-            String testInput = File.ReadAllText("./Inputs/input_day1_test.txt");
-
-            // load and prepare file containing input
-            String inputFile = File.ReadAllText("./Inputs/input_day1.txt");
-
-            // sort by most common letter and print it
-            Console.Write("Test first solution: ");
-            Console.WriteLine($"Number of larger coordinates: {SolveInput(testInput)}");
-
-            Console.Write("First solution: ");
             Console.WriteLine($"Number of larger coordinates: {SolveInput(inputFile)}");
+        }
 
+        protected override void PrintSecondSolution(string inputFile)
+        {
             /*  Distance to Easter Bunny HQ
              *  
-             *  Considering every single measurement isn't as useful as you expected: there's just too much noise in the data.
-             *  Instead, consider sums of a three-measurement sliding window.
-             *  
-             *  The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with
+             *  As the submarine drops below the surface of the ocean, it automatically performs a sonar sweep of the nearby sea floor. 
+             *  On a small screen, the sonar sweep report (your puzzle input) appears: each line is a measurement of the sea floor depth 
+             *  as the sweep looks further and further away from the submarine.
+
+             *  The first order of business is to figure out how quickly the depth increases, just so you know what you're dealing with 
              *  - you never know if the keys will get carried into deeper water by an ocean current or a fish or something.
              *  To do this, count the number of times a depth measurement increases from the previous measurement. (There is no measurement before the first measurement.)
              */
 
-            Console.Write("Test second solution: ");
-            Console.WriteLine($"Number of larger coordinates: {SolveInputSlidingWindow(testInput)}");
-
-            Console.Write("Second solution: ");
             Console.WriteLine($"Number of larger coordinates: {SolveInputSlidingWindow(inputFile)}");
-
-            Console.ReadKey();
-
         }
 
         private int SolveInput(string input)
@@ -75,7 +66,7 @@ namespace AdventOfCode2021 {
 
         private int[] ConvertInputToNumbers(string input)
         {
-            return input.Split(new string[] { "\r\n", "\r", "\n" }, StringSplitOptions.RemoveEmptyEntries).Select(int.Parse).ToArray();
+            return SeparateLines(input).Select(int.Parse).ToArray();
         }
     }
 }
