@@ -8,7 +8,7 @@ namespace AdventOfCode2021
     {
         static void Main(string[] args)
         {
-            int workingDay = 7;
+            int workingDay = 8;
             IDailySoultion daySolution;
             switch (workingDay)
             {
@@ -33,6 +33,9 @@ namespace AdventOfCode2021
                     break;
                 case 7:
                     daySolution = new Day7("input_day7");
+                    break;
+                case 8:
+                    daySolution = new Day8("input_day8");
                     break;
             }
             
