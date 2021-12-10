@@ -14,7 +14,9 @@ namespace AdventOfCode2021.Tasks
 
         public Day10(string baseInputFileName) : base(baseInputFileName) { }
 
-        protected readonly Dictionary<char, int> SCORE_TABLE = new Dictionary<char, int>() { { ')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };
+        protected readonly Dictionary<char, int> SCORE_SYNTAX_TABLE = new Dictionary<char, int>() { { ')', 3 }, { ']', 57 }, { '}', 1197 }, { '>', 25137 } };
+        protected readonly Dictionary<char, int> SCORE_INCOMPLETE_TABLE = new Dictionary<char, int>() { { ')', 1 }, { ']', 2 }, { '}', 3 }, { '>', 4 } };
+        protected readonly List<(char, char)> CHUNK_PAIRS = new List<(char, char)>() { ('(', ')'), ('[', ']'), ('{', '}'), ('<', '>') };
 
         protected override void PrintFirstSolution(string inputFile)
         {
@@ -79,30 +81,31 @@ namespace AdventOfCode2021.Tasks
              * (There will always be an odd number of scores to consider.)
              * Find the completion string for each incomplete line, score the completion strings, and sort the scores. What is the middle score?
              */
-
+            // 27994957 malé
             var solution = SolveIncompleteScore(inputFile);
             Console.WriteLine($"Middle score for invomplete result is {solution}");
         }
 
         private int SolveSyntaxErrorScore(string fileInput)
         {
-            return SeparateLines(fileInput).Select(command => CheckSyntaxError(command)).Select(result => result.Item1 ? SCORE_TABLE[result.Item2] : 0).Sum();
+            return SeparateLines(fileInput).Select(command => CheckSyntaxError(command)).Select(result => result.Item1 ? SCORE_SYNTAX_TABLE[result.Item2] : 0).Sum();
         }
 
-        private int SolveIncompleteScore(string fileInput)
+        private long SolveIncompleteScore(string fileInput)
         {
-            return 0;
+            var scores = SeparateLines(fileInput).Where(command => !CheckSyntaxError(command).Item1).Select(command => GetIncompleteScore(command)).ToList();
+            scores.Sort();
+            return scores[scores.Count / 2];
         }
 
         private (bool, char) CheckSyntaxError(string command)
         {
-            var chunkPairs = new List<(char, char)>() { ('(', ')'), ('[', ']'), ('{', '}'), ('<', '>') };
             var chunks = new Stack<char>();
             var chars = command.ToCharArray();
 
             foreach(var chunkChar in chars)
             {
-                var chunk = chunkPairs.Where(pair => pair.Item1 == chunkChar || pair.Item2 == chunkChar).First();
+                var chunk = CHUNK_PAIRS.Where(pair => pair.Item1 == chunkChar || pair.Item2 == chunkChar).First();
                 
                 if (chunkChar == chunk.Item1) {
                     chunks.Push(chunk.Item2);
@@ -118,5 +121,31 @@ namespace AdventOfCode2021.Tasks
 
             return (false, '0');
         }
+
+        private long GetIncompleteScore(string command)
+        {
+            var chunks = new Stack<char>();
+            var chars = command.ToCharArray();
+
+            foreach(var chunkChar in chars)
+            {
+                var chunk = CHUNK_PAIRS.Where(pair => pair.Item1 == chunkChar || pair.Item2 == chunkChar).First();
+                
+                if (chunkChar == chunk.Item1) {
+                    chunks.Push(chunk.Item2);
+                } else
+                {
+                    chunks.Pop();
+                }
+            }
+
+            long acc = 0;
+            foreach (var chunk in chunks)
+            {
+                acc = acc * 5 + SCORE_INCOMPLETE_TABLE[chunk];
+            }
+            return acc;
+        }
+        
     }
 }
