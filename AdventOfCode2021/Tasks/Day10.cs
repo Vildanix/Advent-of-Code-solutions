@@ -81,9 +81,9 @@ namespace AdventOfCode2021.Tasks
              * (There will always be an odd number of scores to consider.)
              * Find the completion string for each incomplete line, score the completion strings, and sort the scores. What is the middle score?
              */
-            // 27994957 malé
+
             var solution = SolveIncompleteScore(inputFile);
-            Console.WriteLine($"Middle score for invomplete result is {solution}");
+            Console.WriteLine($"Middle score for incomplete result is {solution}");
         }
 
         private int SolveSyntaxErrorScore(string fileInput)

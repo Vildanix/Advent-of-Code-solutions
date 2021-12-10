@@ -11,24 +11,31 @@ namespace AdventOfCode2021
         {
             int workingDay = 10;
 
-            IDailySoultion daySolution = ConstructDailySolution(workingDay);
-            daySolution.CreateSolution();
+            try
+            {
+                IDailySoultion daySolution = ConstructDailySolution(workingDay);
+                daySolution.CreateSolution();
+            } catch (Exception e)
+            {
+                Console.WriteLine(e.Message);
+            }
+            
         }
 
         private static IDailySoultion ConstructDailySolution(int solutionNumber)
         {
-            var taskNameSpace = typeof(DailySolution).Namespace;
+            var typeName = $"{typeof(DailySolution).Namespace}.Day{solutionNumber}";
 
-            Type type = Type.GetType($"{taskNameSpace}.Day{solutionNumber}");
+            Type type = Type.GetType(typeName);
             if (type == null)
             {
-                throw new InvalidOperationException("Type " + type.Name + " does not exists");
+                throw new InvalidOperationException($"Type {typeName} does not exists");
             }
 
             ConstructorInfo constructor = type.GetConstructor(new Type[] { typeof(string) });
             if (constructor == null)
             {
-                throw new InvalidOperationException("Type " + type.Name + " missing string constructor");
+                throw new InvalidOperationException($"Type {typeName} missing string constructor");
             }
             return constructor.Invoke(new object[] { (string)$"input_day{solutionNumber}" }) as IDailySoultion;
         }
