@@ -6,7 +6,7 @@ using System.Text;
 
 // Advent of Code
 // Autor: Stanislav Tvrzník
-// Year: 2021
+// Year: 2022
 
 namespace AdventOfCode2022.Tasks
 {
@@ -31,7 +31,9 @@ namespace AdventOfCode2022.Tasks
         protected override void PrintSecondSolution(string inputFile)
         {
             /* 
-             * Find first three elf with most Calories
+             *  Find first three elf with most Calories
+             * 
+             *  https://adventofcode.com/2022/day/1
              */
             int numberOfElves = 3;
             var solution = SolveInput(inputFile, numberOfElves);
